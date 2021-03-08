@@ -1,4 +1,4 @@
-import 'package:bloc_architecture_app/logic/bloc/weather/weather_bloc.dart';
+import 'logic/bloc/weather/weather_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

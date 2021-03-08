@@ -1,5 +1,5 @@
-name: bloc_architecture_app
-description: A Flutetr Bloc Architecture project.
+name: bloc_flutter_weather_app
+description: A Flutter Bloc Weather app.
 
 publish_to: 'none'
 
