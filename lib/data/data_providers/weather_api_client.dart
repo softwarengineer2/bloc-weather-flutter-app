@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc_flutter_weather_app/data/models/weather.dart';
 import 'package:meta/meta.dart';
