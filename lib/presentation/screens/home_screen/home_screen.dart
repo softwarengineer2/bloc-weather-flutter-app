@@ -13,14 +13,14 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        flexibleSpace: IconButton(
+        /*flexibleSpace: IconButton(
           icon: Icon(Icons.search),
           onPressed: () {
             //Navigator.pop(context, cityName.text);
             BlocProvider.of<WeatherBloc>(context)
                 .add(FetchWeather(cityName: "İstanbul"));
           },
-        ),
+        ),*/
       ),
       body: Center(
         child: BlocListener<WeatherBloc, WeatherState>(
@@ -31,23 +31,85 @@ class HomeScreen extends StatelessWidget {
             }
             print('--------------------------------');
           },
-          child: Row(
-            //mainAxisAlignment: MainAxisAlignment.start,
+          child: Stack(
             children: <Widget>[
               Container(
-                width: 150,
-                child: TextFormField(
-                  autofocus: true,
-                  textAlign: TextAlign.center,
-                  controller: _searchController,
+                alignment: Alignment.topCenter,
+                padding: EdgeInsets.only(left: 10),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.65,
+                      child: TextFormField(
+                        autofocus: true,
+                        textAlign: TextAlign.center,
+                        controller: _searchController,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        print('here 1');
+                      },
+                      child: IconButton(
+                        icon: Icon(Icons.search),
+                        highlightColor: Colors.pink,
+                        onPressed: () {
+                          print('clicked');
+                          if (_searchController.text != "") {
+                            BlocProvider.of<WeatherBloc>(context).add(
+                                FetchWeather(cityName: _searchController.text));
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  BlocProvider.of<WeatherBloc>(context)
-                      .add(FetchWeather(cityName: _searchController.text));
-                },
+              Container(
+                alignment: Alignment.bottomRight,
+                child: Center(
+                  child: BlocBuilder<WeatherBloc, WeatherState>(
+                    builder: (_, WeatherState state) {
+                      if (state is WeatherInitial) {
+                        return Center(child: Text('Please Select a Location'));
+                      }
+                      if (state is WeatherLoading) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (state is WeatherLoaded) {
+                        final weather = state.weather;
+                        return ListView(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(top: 100.0),
+                              child: Center(
+                                child: Text("Location"),
+                              ),
+                            ),
+                            Center(
+                              child: Text("Last Update"),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 50.0),
+                              child: Center(
+                                child: Text("Location"),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      //if (state is WeatherError) {
+                      return Text(
+                        'Something went wrong!',
+                        style: TextStyle(color: Colors.red),
+                      );
+                      //}
+                    },
+                  ),
+                ),
+                /*FloatingActionButton(
+                  onPressed: () => {print('clicked')},
+                ),*/
               ),
             ],
           ),
